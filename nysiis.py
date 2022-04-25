@@ -1,7 +1,9 @@
 #!/usr/bin/python
 # -*- coding: utf-8 -*-
 
-import os, sys, getopt
+import os
+import sys
+import getopt
 
 """
 https://en.wikipedia.org/w/index.php?title=New_York_State_Identification_and_Intelligence_System&oldid=814240898
@@ -27,21 +29,21 @@ def NYSIIS(name, true_NYSIIS = False):
     translated = name.upper()
     
     # Translate first characters of name: MAC → MCC; KN → NN; K → C; PH, PF → FF; SCH → SSS
-    if translated[0:3] == 'MAC':
+    if translated[0:3] == "MAC":
         translated = "MCC" + translated[3:]
-    elif translated[0:2] == 'KN':
+    elif translated[0:2] == "KN":
         translated = "NN" + translated[2:]
-    elif translated[0:1] == 'K':
+    elif translated[0:1] == "K":
         translated = "C" + translated[-1]
-    elif translated[0:2] == 'PH':
+    elif translated[0:2] == "PH":
         translated = "PF" + translated[2:]
-    elif translated[0:3] == 'SCH':
+    elif translated[0:3] == "SCH":
         translated = "SSS" + translated[3:]
     
     # Translate last characters of name: EE, IE → Y; DT, RT, RD, NT, ND → D
-    if translated[-2:] in ['EE', 'IE']:
+    if translated[-2:] in ["EE", "IE"]:
         translated = translated[0:-2] + "Y"
-    elif translated[-2:] in ['DT', 'RT', 'RD', 'NT', 'ND']:
+    elif translated[-2:] in ["DT", "RT", "RD", "NT", "ND"]:
         translated = translated[0:-2] + "D"
     
     # First character of key = first character of name.
@@ -92,7 +94,7 @@ def NYSIIS(name, true_NYSIIS = False):
         
     #end while
     
-    if key[-1:] in ['S', 'A']: # If last character is S, remove it. If last character is A, remove it.
+    if key[-1:] in ["S", "A"]: # If last character is S, remove it. If last character is A, remove it.
         key = key[0:-1]
     elif key[-2:] == "AY": # If last characters are AY, replace with Y.
         key = key[0:-2] + "Y"
@@ -104,17 +106,17 @@ def NYSIIS(name, true_NYSIIS = False):
         return key
 
 def main(argv):
-    name = ''
+    name = ""
     
     try:
         opts, args = getopt.getopt(argv,"hn:",["name="])
     except getopt.GetoptError:
-        print('nysiis.py -n <name>')
+        print("nysiis.py -n <name>")
         sys.exit(2)
     
     for opt, arg in opts:
-        if opt == '-h':
-            print('nysiis.py -n <name>')
+        if opt == "-h":
+            print("nysiis.py -n <name>")
             sys.exit()
         elif opt in ("-n", "--name"):
             name = arg
