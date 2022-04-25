@@ -44,12 +44,11 @@ def NYSIIS(name, trueNYSIIS=False):
     elif translated[-2:] in ['DT', 'RT', 'RD', 'NT', 'ND']:
         translated = translated[0:-2] + "D"
     
-    lastCharacter = translated[0:1]
-    
     # First character of key = first character of name.
-    key = lastCharacter
-    
+    key = translated[0:1]
     translated = translated[1:]
+    
+    lastCharacter = key
     currentCharacter = ""
     nextAppend = ""
     vowels = ["A","E","I","O","U"]
@@ -85,15 +84,11 @@ def NYSIIS(name, trueNYSIIS=False):
         elif currentCharacter != lastCharacter:
             nextAppend = currentCharacter
         
-        lastCharacter = currentCharacter
+        if nextAppend != key[-1:]: # Add current to key if current is not same as the last key character.
+            key += nextAppend
         
-        if nextAppend == "":
-            translated = translated[1:]
-            lastCharacter = key[-1:]
-        else:
-            if nextAppend != key[-1:]: # Add current to key if current is not same as the last key character.
-                key += nextAppend
-            translated = translated[len(nextAppend):]
+        lastCharacter = currentCharacter
+        translated = translated[max(len(nextAppend),1):]
         
     #end while
     
@@ -107,8 +102,6 @@ def NYSIIS(name, trueNYSIIS=False):
         return key[0:6]
     else:
         return key
-
-
 
 def main(argv):
     name = ''
