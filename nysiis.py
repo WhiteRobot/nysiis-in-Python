@@ -23,7 +23,7 @@ If last character is A, remove it.
 Append translated key to value from step 3 (removed first character)
 If longer than 6 characters, truncate to first 6 characters. (only needed for true NYSIIS, some versions use the full key)
 """
-def NYSIIS(name, trueNYSIIS=False):
+def NYSIIS(name, true_NYSIIS = False):
     translated = name.upper()
     
     # Translate first characters of name: MAC → MCC; KN → NN; K → C; PH, PF → FF; SCH → SSS
@@ -48,47 +48,47 @@ def NYSIIS(name, trueNYSIIS=False):
     key = translated[0:1]
     translated = translated[1:]
     
-    lastCharacter = key
-    currentCharacter = ""
-    nextAppend = ""
+    last_character = key
+    current_character = ""
+    next_append = ""
     vowels = ["A","E","I","O","U"]
     
     # Translate remaining characters by following rules, incrementing by one character each time:
     while len(translated) > 0:
         
-        nextAppend = ""
-        currentCharacter = translated[0:1]
+        next_append = ""
+        current_character = translated[0:1]
         
         if translated[0:2] == "EV": # EV → AF
-            nextAppend = "AF"
-        elif currentCharacter in vowels: # else A, E, I, O, U → A
-            nextAppend = "A"
-        elif currentCharacter == "Q": # Q → G
-            nextAppend = "G"
-        elif currentCharacter == "Z": # Z → S
-            nextAppend = "S"
-        elif currentCharacter == "M": # M → N
-            nextAppend = "N"
+            next_append = "AF"
+        elif current_character in vowels: # else A, E, I, O, U → A
+            next_append = "A"
+        elif current_character == "Q": # Q → G
+            next_append = "G"
+        elif current_character == "Z": # Z → S
+            next_append = "S"
+        elif current_character == "M": # M → N
+            next_append = "N"
         elif translated[0:2] == "KN": # KN → N
-            nextAppend = "N"
-        elif currentCharacter == "K": # K → C
-            nextAppend = "C"
+            next_append = "N"
+        elif current_character == "K": # K → C
+            next_append = "C"
         elif translated[0:3] == "SCH": # SCH → SSS
-            nextAppend = "SSS"
+            next_append = "SSS"
         elif translated[0:2] == "PH": # PH → FF
-            nextAppend = "FF"
-        elif currentCharacter == "H" and (lastCharacter not in vowels or translated[1:2] not in vowels): # H → If previous or next is non-vowel, previous.
-            nextAppend = lastCharacter
-        elif currentCharacter == "W" and lastCharacter in vowels: # W → If previous is vowel, A.
-            nextAppend = "A"
-        elif currentCharacter != lastCharacter:
-            nextAppend = currentCharacter
+            next_append = "FF"
+        elif current_character == "H" and (last_character not in vowels or translated[1:2] not in vowels): # H → If previous or next is non-vowel, previous.
+            next_append = last_character
+        elif current_character == "W" and last_character in vowels: # W → If previous is vowel, A.
+            next_append = "A"
+        elif current_character != last_character:
+            next_append = current_character
         
-        if nextAppend != key[-1:]: # Add current to key if current is not same as the last key character.
-            key += nextAppend
+        if next_append != key[-1:]: # Add current to key if current is not same as the last key character.
+            key += next_append
         
-        lastCharacter = currentCharacter
-        translated = translated[max(len(nextAppend),1):]
+        last_character = current_character
+        translated = translated[max(len(next_append),1):]
         
     #end while
     
@@ -98,7 +98,7 @@ def NYSIIS(name, trueNYSIIS=False):
         key = key[0:-2] + "Y"
     
     # If longer than 6 characters, truncate to first 6 characters. (only needed for true NYSIIS, some versions use the full key)
-    if trueNYSIIS:
+    if true_NYSIIS:
         return key[0:6]
     else:
         return key
